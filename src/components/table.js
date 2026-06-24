@@ -11,7 +11,6 @@ export function initTable(settings, onAction) {
     const {tableTemplate, rowTemplate, before, after} = settings;
     const root = cloneTemplate(tableTemplate);
 
-    // Вывести дополнительные шаблоны до и после таблицы
     before.reverse().forEach(subName => {
         root[subName] = cloneTemplate(subName);
         root.container.prepend(root[subName].container);
@@ -22,7 +21,6 @@ export function initTable(settings, onAction) {
         root.container.append(root[subName].container);    
     }); 
 
-    // Обработать события и вызвать onAction()
     root.container.addEventListener('change', () => {
         onAction();
     });
@@ -37,20 +35,17 @@ export function initTable(settings, onAction) {
     });
 
     const render = (data) => {
-        // Преобразовать данные в массив строк на основе шаблона rowTemplate
         const nextRows = data.map(item => {
             const row = cloneTemplate(rowTemplate);
             
-            Object.keys(item).forEach(key => {
+            Object.entries(item).forEach(([key, value]) => {
                 const element = row.elements[key];
-                if (element) {
-                    // Проверка по типу тега: если это не инпут, устанавливаем textContent
-                    if (element.tagName !== 'INPUT' && element.tagName !== 'SELECT' && element.tagName !== 'TEXTAREA') {
-                        element.textContent = item[key];
-                    } else {
-                        // Для полей ввода устанавливаем value
-                        element.value = item[key];
-                    }
+                if (!element) return;
+                
+                if (['INPUT', 'SELECT', 'TEXTAREA'].includes(element.tagName)) {
+                    element.value = value;
+                } else {
+                    element.textContent = value;
                 }
             });
             

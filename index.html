@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
@@ -52,13 +52,13 @@
     <div class="table-row filter-row" data-name="filter" role="rowgroup">
         <div class="table-column">
             <label class="filter-wrapper">
-                <input type="text" class="input" placeholder="Search" name="date" data-name="searchByDate">
+                <input type="text" value="" class="input" placeholder="Search" name="date" data-name="searchByDate">
                 <button type="submit" name="clear" data-field="date" class="icon" aria-label="Filter by date"></button>
             </label>
         </div>
         <div class="table-column">
             <label class="filter-wrapper">
-                <input type="text" class="input" name="customer" placeholder="Search" data-name="searchByCustomer">
+                <input type="text" value="" class="input" name="customer" placeholder="Search" data-name="searchByCustomer">
                 <button type="submit" name="clear" data-field="customer" class="icon" aria-label="Filter by customer"></button>
             </label>
         </div>
@@ -71,8 +71,10 @@
         </div>
         <div class="table-column">
             <div class="range-inputs">
-                <input type="text" class="input" placeholder="from" name="totalFrom" data-name="totalFrom" aria-label="Experience from">
-                <input type="text" class="input" placeholder="to" name="totalTo" data-name="totalTo" aria-label="Experience to">
+                <input type="text" class="input" placeholder="from" name="totalFrom" data-name="totalFrom"
+                       aria-label="Experience from">
+                <input type="text" class="input" placeholder="to" name="totalTo" data-name="totalTo"
+                       aria-label="Experience to">
             </div>
         </div>
     </div>

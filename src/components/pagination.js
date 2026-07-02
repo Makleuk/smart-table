@@ -5,12 +5,13 @@ export const initPagination = ({pages, fromRow, toRow, totalRows}, createPage) =
     const pageTemplate = pages.firstElementChild.cloneNode(true);
     pages.firstElementChild.remove();
     
-    let pageCount = 0;
+    let pageCount; // временная переменная для хранения количества страниц
 
     const applyPagination = (query, state, action) => {
         const limit = state.rowsPerPage;
         let page = state.page;
 
+        // @todo: #2.6 — обработать действия (перенесено из старого кода)
         if (action) {
             switch(action.name) {
                 case 'prev': 
@@ -28,24 +29,25 @@ export const initPagination = ({pages, fromRow, toRow, totalRows}, createPage) =
             }
         }
 
-        return {
-            ...query,
+        return Object.assign({}, query, {
             limit,
             page
-        };
+        });
     }
 
     const updatePagination = (total, { page, limit }) => {
-        pageCount = Math.ceil(total / limit) || 1;
+        pageCount = Math.ceil(total / limit);
 
+        // @todo: #2.4 — получить список видимых страниц и вывести их (перенесено из старого кода)
         const visiblePages = getPages(page, pageCount, 5);
         pages.replaceChildren(...visiblePages.map(pageNumber => {
             const el = pageTemplate.cloneNode(true);
             return createPage(el, pageNumber, pageNumber === page);
         }));
 
+        // @todo: #2.5 — обновить статус пагинации (перенесено из старого кода)
         fromRow.textContent = total > 0 ? (page - 1) * limit + 1 : 0;
-        toRow.textContent = Math.min(page * limit, total);
+        toRow.textContent = Math.min((page * limit), total);
         totalRows.textContent = total;
     }
 

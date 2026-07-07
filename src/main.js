@@ -74,12 +74,35 @@ const {applyPagination, updatePagination} = initPagination(
 const appRoot = document.querySelector('#app');
 appRoot.appendChild(sampleTable.container);
 
+function setupFilterListeners() {
+    const filterRow = sampleTable.filter.container;
+    
+    // Все поля ввода в фильтрах
+    const inputs = filterRow.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            render();
+        });
+    });
+    
+    // Селект продавца
+    const sellerSelect = filterRow.querySelector('[data-name="searchBySeller"]');
+    if (sellerSelect) {
+        sellerSelect.addEventListener('change', () => {
+            render();
+        });
+    }
+}
+
 async function init() {
     const indexes = await api.getIndexes();
 
     updateIndexes(sampleTable.filter.elements, {
         searchBySeller: indexes.sellers
     });
+    
+    
+    setupFilterListeners();
     
     return indexes;
 }

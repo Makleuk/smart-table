@@ -18,39 +18,24 @@ export function initFiltering(filterElements) {
         // Применяем фильтры из state
         const newQuery = { ...query };
         
-        // Date фильтр - используем searchByDate из state
-        if (state.searchByDate?.trim()) {
-            newQuery.date = state.searchByDate;
-        } else {
-            delete newQuery.date;
+        if (state.date?.trim()) {
+            newQuery.date = state.date;
         }
         
-        // Customer фильтр - используем searchByCustomer из state
-        if (state.searchByCustomer?.trim()) {
-            newQuery.customer = state.searchByCustomer;
-        } else {
-            delete newQuery.customer;
+        if (state.customer?.trim()) {
+            newQuery.customer = state.customer;
         }
         
-        // Seller фильтр - используем searchBySeller из state
-        if (state.searchBySeller && state.searchBySeller !== '') {
-            newQuery.seller = state.searchBySeller;
-        } else {
-            delete newQuery.seller;
+        if (state.seller && state.seller !== '') {
+            newQuery.seller = state.seller;
         }
         
-        // Total from фильтр
         if (state.totalFrom?.trim()) {
             newQuery.totalFrom = state.totalFrom;
-        } else {
-            delete newQuery.totalFrom;
         }
         
-        // Total to фильтр
         if (state.totalTo?.trim()) {
             newQuery.totalTo = state.totalTo;
-        } else {
-            delete newQuery.totalTo;
         }
         
         return newQuery;

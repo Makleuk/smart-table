@@ -22,16 +22,23 @@ export function initFiltering(filterElements) {
             newQuery['filter[customer]'] = state.customer;
         }
         
+        // Для продавца передаем имя, а не ID
         if (state.seller && state.seller !== '') {
             newQuery['filter[seller]'] = state.seller;
         }
         
         if (state.totalFrom?.trim()) {
-            newQuery['filter[totalFrom]'] = state.totalFrom;
+            const from = parseFloat(state.totalFrom);
+            if (!isNaN(from) && from >= 0) {
+                newQuery['filter[totalFrom]'] = from;
+            }
         }
         
         if (state.totalTo?.trim()) {
-            newQuery['filter[totalTo]'] = state.totalTo;
+            const to = parseFloat(state.totalTo);
+            if (!isNaN(to) && to >= 0) {
+                newQuery['filter[totalTo]'] = to;
+            }
         }
         
         return newQuery;
@@ -45,28 +52,18 @@ export function initFiltering(filterElements) {
             while (sellerSelect.options.length > 1) {
                 sellerSelect.remove(1);
             }
-
+            
             const sellersData = indexes.searchBySeller;
+            
             if (sellersData) {
-                if (Array.isArray(sellersData)) {
-                    sellersData.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item.id;
-                        option.textContent = item.name || item.first_name + ' ' + item.last_name;
-                        sellerSelect.appendChild(option);
-                    });
-                } else if (typeof sellersData === 'object') {
-                    Object.entries(sellersData).forEach(([id, name]) => {
-                        const option = document.createElement('option');
-                        option.value = id;
-                        if (typeof name === 'object' && name !== null) {
-                            option.textContent = name.first_name + ' ' + name.last_name || name.name || id;
-                        } else {
-                            option.textContent = name;
-                        }
-                        sellerSelect.appendChild(option);
-                    });
-                }
+                // Сервер возвращает объект { seller_1: 'Alexey Petrov', ... }
+                // Для value используем имя продавца (а не ID), так как сервер ожидает имя
+                Object.entries(sellersData).forEach(([id, name]) => {
+                    const option = document.createElement('option');
+                    option.value = name; // Используем имя как value
+                    option.textContent = name;
+                    sellerSelect.appendChild(option);
+                });
             }
             
             if (currentValue) {
